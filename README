@@ -30,10 +30,9 @@ DIRECTIVES
         cookie path, useful if you plan to use different keys for locations. default is /
 
     testcookie_secret
-        secret string, used in challenge cookie computation,
+        secret string, used in challenge cookie computation, should be 32 bytes or more,
         better to be long but static to prevent cookie reset for legitimate users every server restart.
         if set to "random" - new secret will be generated every server restart, not recomended(all cookies with previous key will be invalid),
-        if not set, only value based on testcookie_session will be used.
 
     testcookie_session
         sets the challenge generation function input,
@@ -70,8 +69,8 @@ DIRECTIVES
         available all the nginx variables and
 
             $testcookie_nexturl - URL the client should be redirected to
-            $testcookie_uid_got - cookie value received from client, empty if no cookie or it does not match format
-            $testcookie_uid_set - correct cookie value we're expecting from client
+            $testcookie_got - cookie value received from client, empty if no cookie or it does not match format
+            $testcookie_set - correct cookie value we're expecting from client
             $testcookie_ok - user passed test (1/0). Note: changed from "yes"/"no" in v1.10
 
         also, if testcookie_refresh_encrypt_cookie enabled there are three more variables
