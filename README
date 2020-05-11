@@ -60,6 +60,10 @@ DIRECTIVES
         sets the networks for which the testing will not be used, add search engine networks here
         currently IPv4 CIDR only.
 
+    testcookie_pass
+        variable name, if variable set to 1 cookie check will not be performed,
+        can be used for more complex whitelisting.
+
     testcookie_redirect_via_refresh
         set cookie and redirect using HTTP meta refresh, required if testcookie_refresh_template used (on|off)
         default is off.
@@ -77,6 +81,9 @@ DIRECTIVES
             $testcookie_enc_key - encryption key (32 hex digits)
             $testcookie_enc_iv - encryption iv (32 hex digits)
             $testcookie_enc_sec - encrypted cookie value (32 hex digits)
+
+    testcookie_refresh_status
+        custom HTTP response status. 200 by default.
 
     testcookie_deny_keepalive
         close connection just after setting the cookie, no reason to keep connections with bots (on|off)
@@ -126,6 +133,10 @@ DIRECTIVES
         default is off.
         any variable value except "off" interpreted as True.
 
+    testcookie_port_in_redirect
+        Keep server port in redirect (on|off)
+        default is off.
+
 
 INSTALLATION
 
@@ -140,6 +151,19 @@ INSTALLATION
 
         make
         make install
+
+    If you use nginx >= 1.9.11 you can compile Dynamic module.
+
+        wget 'http://nginx.org/download/nginx-1.9.11.tar.gz'
+        tar -xzvf nginx-1.9.11.tar.gz
+        cd nginx-1.9.11/
+        ./configure --add-dynamic-module=/path/to/testcookie-nginx-module
+
+        make
+        make install
+
+    Then load "ngx_http_testcookie_access_module.so" using "load_module" directive.
+
 
     For using client-side cookie decryption,
     you need to manually grab SlowAES (<http://code.google.com/p/slowaes/>)
@@ -251,7 +275,7 @@ SUPPORT THE PROJECT
 
 COPYRIGHT & LICENSE
 
-    Copyright (C) 2011-2015 Eldar Zaitov (kyprizel@gmail.com).
+    Copyright (C) 2011-2017 Eldar Zaitov (kyprizel@gmail.com).
 
     All rights reserved.
 

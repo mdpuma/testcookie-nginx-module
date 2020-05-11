@@ -151,6 +151,18 @@ testcookie_whitelist
 
 Sets the networks for which the testing will not be used, add search engine networks here. Currently IPv4 CIDR only.
 
+testcookie_pass
+---------------
+**syntax:** *testcookie_pass $variable;*
+
+**default:** *none*
+
+**context:** *http, server*
+
+Sets the variable name to test if cookie check should be bypassed.
+If variable value set to *1* during the request - cookie check will not be performed.
+Can be used for more complex whitelisting.
+
 testcookie_redirect_via_refresh
 -------------------------------
 **syntax:** *testcookie_redirect_via_refresh (on|off);*
@@ -182,6 +194,17 @@ also, if testcookie_refresh_encrypt_cookie enabled there are three more variable
     $testcookie_enc_key - encryption key (32 hex digits)
     $testcookie_enc_iv - encryption iv (32 hex digits)
     $testcookie_enc_sec - encrypted cookie value (32 hex digits)
+
+testcookie_refresh_status
+-------------------------
+**syntax:** *testcookie_refresh_status &lt;code&gt;*
+
+**default:** *200*
+
+**context:** *http, server, location*
+
+Use custom HTTP status code when serving html.
+
 
 testcookie_deny_keepalive
 -------------------------
@@ -261,7 +284,6 @@ testcookie_internal
 
 **context:** *http, server, location*
 
-Process only GET requests, POST requests will be bypassed.
 Enable testcookie check for internal redirects (disabled by default for optimization purposes!), useful for this type of configs:
 
     rewrite ^/(.*)$ /index.php?$1 last;
@@ -287,6 +309,16 @@ testcookie_secure_flag
 Enable Secure flag for cookie.
 Any variable value except "off" interpreted as True.
 
+testcookie_port_in_redirect
+---------------------------
+**syntax:** *testcookie_port_in_redirect (on|off);*
+
+**default:** *off*
+
+**context:** *http, server, location*
+
+Expose port in redirect.
+
 
 Installation
 ============
@@ -301,8 +333,20 @@ Grab the nginx source code from [nginx.org](http://nginx.org/), for example, the
     make
     make install
 
+If you use nginx >= 1.9.11 you can compile Dynamic module.
+
+    wget 'http://nginx.org/download/nginx-1.9.11.tar.gz'
+    tar -xzvf nginx-1.9.11.tar.gz
+    cd nginx-1.9.11/
+    ./configure --add-dynamic-module=/path/to/testcookie-nginx-module
+
+    make
+    make install
+
+Then load "ngx_http_testcookie_access_module.so" using "load_module" directive.
+
 For using client-side cookie decryption, you need to manually grab [SlowAES](http://code.google.com/p/slowaes/) JavaScript AES implementation,
-patch it(utils/aes.patch) and put it to document root.
+**patch it(utils/aes.patch)** and put it to document root.
 
 Compatibility
 =============
@@ -418,7 +462,7 @@ Support the project
 Copyright & License
 ===================
 
-Copyright (C) 2011-2015 Eldar Zaitov (kyprizel@gmail.com).
+Copyright (C) 2011-2017 Eldar Zaitov (kyprizel@gmail.com).
 
 All rights reserved.
 

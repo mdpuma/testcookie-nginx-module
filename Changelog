@@ -1,3 +1,20 @@
+v1.24
+*) disable caching for module variables
+
+v1.23
+*) testcookie_port_in_redirect config variable added
+
+v1.22
+*) openssl 1.1.0 compatible
+
+v1.21
+*) testcookie_refresh_status directive added (see docs)
+
+v1.20
+*) testcookie_pass directive added (see docs)
+*) can be compiled as a dynamic module
+*) changed filename to access than filter b/c testcookie technically is access module 
+
 v1.19
 *) Set Cache-Control and Expires headers to prevent caching of testcookie responses
 
